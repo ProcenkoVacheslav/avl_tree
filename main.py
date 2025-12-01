@@ -1,12 +1,3 @@
-class _Node:
-    def __init__(self, value=None):
-        self.value = value
-        self.left = None
-        self.right = None
-        self.height = 1
-        self.parent = None
-
-
 class AVLTree:
     class __Node:
         def __init__(self, value: int):
@@ -16,42 +7,42 @@ class AVLTree:
             self.height = 1
             self.balance = 0
 
-        def __repr__(self):
+        def __repr__(self) -> str:
             return f'node({self.value})'
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.root = None
 
-    def insert(self, value):
+    def insert(self, value: int) -> None:
         self.root = self.__insert(self.root, value)
 
-    def delete(self, value):
+    def delete(self, value: int) -> None:
         self.root = self.__delete(self.root, value)
 
-    def search(self, value):
+    def search(self, value: int) -> __Node | None:
         return self.__search(self.root, value)
 
     @staticmethod
-    def __height(node):
+    def __height(node) -> int:
         if node is None:
             return 0
         return node.height
 
     @staticmethod
-    def __min_value_node(node):
+    def __min_value_node(node: __Node) -> __Node:
         current = node
         while current.left is not None:
             current = current.left
         return current
 
-    def __update_height(self, node):
+    def __update_height(self, node: __Node) -> None:
         if node is not None:
             left_height = self.__height(node.left)
             right_height = self.__height(node.right)
             node.height = max(left_height, right_height) + 1
             node.balance = right_height - left_height
 
-    def __insert(self, node, value):
+    def __insert(self, node: __Node, value: int) -> __Node:
         if node is None:
             return self.__Node(value)
 
@@ -65,7 +56,7 @@ class AVLTree:
 
         return self.__balance_node(node)
 
-    def __balance_node(self, node):
+    def __balance_node(self, node: __Node) -> __Node:
         self.__update_height(node)
 
         if node.balance < -1:
@@ -80,7 +71,7 @@ class AVLTree:
 
         return node
 
-    def __rotate_right(self, y):
+    def __rotate_right(self, y: __Node) -> __Node:
         x = y.left
         t_2 = x.right
 
@@ -92,7 +83,7 @@ class AVLTree:
 
         return x
 
-    def __rotate_left(self, x):
+    def __rotate_left(self, x: __Node) -> __Node:
         y = x.right
         t_2 = y.left
 
@@ -104,7 +95,7 @@ class AVLTree:
 
         return y
 
-    def __delete(self, node, value) -> __Node | None:
+    def __delete(self, node: __Node, value: int) -> __Node | None:
         if node is None:
             return node
 
@@ -124,7 +115,7 @@ class AVLTree:
 
         return self.__balance_node(node)
 
-    def __search(self, node, value) -> __Node | None:
+    def __search(self, node: __Node, value: int) -> __Node | None:
         if node is None or node.value == value:
             return node.value if node else None
 
@@ -132,18 +123,18 @@ class AVLTree:
             return self.__search(node.left, value)
         return self.__search(node.right, value)
 
-    def inorder_traversal(self):
+    def inorder_traversal(self) -> list[int]:
         result = []
         self._inorder_traversal(self.root, result)
         return result
 
-    def _inorder_traversal(self, node, result):
+    def _inorder_traversal(self, node: __Node, result: list[int]):
         if node:
             self._inorder_traversal(node.left, result)
             result.append(node.value)
             self._inorder_traversal(node.right, result)
 
-    def __str__(self):
+    def __str__(self) -> str:
         result = self.inorder_traversal()
         return f'avl_tree({result})'
 
